@@ -8,8 +8,8 @@ int main(){
 	int posicao;
 	int *vertices;
 	int *fila;
-	int n_fila = 0;
-		int pai, filhos;
+	int inicio_fila, fim_fila = 0;
+	int pai;
 
 	scanf("%d %d", &n_moleculas, &n_ligacoes);
 
@@ -27,28 +27,27 @@ int main(){
 	for (k = 0; k < n_moleculas; k++)
 		vertices[k] = -1;
 
-	fila = (int *)calloc(sizeof(int), n_moleculas+1);
-	for (k = 0; k < n_moleculas; k++)
-		fila[k] = -1;
+	fila = (int *)malloc(sizeof(int) * n_moleculas+1);
 
 	fila[0] = 0;
+	fim_fila++;
 	vertices[0] = 1;
 
-	while (fila[n_fila] != -1){
-		pai = fila[n_fila];
-		filhos = 0;
+	while (inicio_fila < fim_fila){
+		pai = fila[inicio_fila];
 		for (k = 0; k < n_moleculas; k++){
 			if (adjacencias[pai * n_moleculas + k] == 1){
 				if (vertices[k] == vertices[pai]){
 					printf ("dotutama\n");
 					return 0;
 				}
-				vertices[k] = (vertices[pai] + 1) % 2;
-				fila[filhos++] = k;
+				if (vertices[k] == -1){
+					vertices[k] = (vertices[pai] + 1) % 2;
+					fila[fim_fila++] = k;					
+				}
 			}
-
 		}
-		n_fila++;
+		inicio_fila++;
 	}
 
 	printf ("doturacu ou dotutama\n");
