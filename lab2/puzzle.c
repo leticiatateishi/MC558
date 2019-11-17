@@ -32,7 +32,7 @@ elemento* find_set(elemento* e){
 }
 
 void join(elemento* e1, elemento* e2){
-	elemento* tail = malloc(sizeof(elemento));
+	elemento* tail;
 	tail = e1;
 	while ((*tail).proximo != NULL){
 		tail = (*tail).proximo;
@@ -141,7 +141,7 @@ int main(){
 			if (selecionadas[j]->peso > maior)
 				maior = selecionadas[j]->peso;
 		}
-		printf("Resposta: %d\n", maior);
+		printf("%d\n", maior);
 	}
 
 	for(i = 0; i < n_areas; i++){
@@ -155,5 +155,3 @@ int main(){
 	free(selecionadas);
 	return 0;
 }
-
-/*TODO: verificar lista maior antes de union*/
