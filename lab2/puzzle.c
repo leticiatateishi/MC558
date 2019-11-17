@@ -91,21 +91,6 @@ void reset_set(elemento** conjuntos, int n){
 	}
 }
 
-/*	Divide o vetor a ser ordenado em duas metades, ordena os dois subvetores e
- *	depois intercala os dois com merge. 
- *	Entrada: vetor de apontadores, p posição de início do vetor e r posição 
- *	final do vetor */
-void merge_sort(aresta** vetor, int p, int r){
-	int q;
-	if (p < r){
-		q = floor((p+r)/2);
-		merge_sort(vetor, p, q);
-		merge_sort(vetor, q+1, r);
-		merge(vetor, p, q, r);
-
-	}
-}
-
 /*	Intercala dois subvetores ordenados para que o resultado seja um vetor
  *	ordenado.
  *	Entrada: vetor de apontadores, p posição de início do vetor, q posição 
@@ -128,6 +113,22 @@ void merge(aresta** vetor, int p, int q, int r){
 	}
 	free(aux);
 }
+
+/*	Divide o vetor a ser ordenado em duas metades, ordena os dois subvetores e
+ *	depois intercala os dois com merge. 
+ *	Entrada: vetor de apontadores, p posição de início do vetor e r posição 
+ *	final do vetor */
+void merge_sort(aresta** vetor, int p, int r){
+	int q;
+	if (p < r){
+		q = floor((p+r)/2);
+		merge_sort(vetor, p, q);
+		merge_sort(vetor, q+1, r);
+		merge(vetor, p, q, r);
+
+	}
+}
+
 
 int main(){
 	int n_areas, n_ligacoes;
