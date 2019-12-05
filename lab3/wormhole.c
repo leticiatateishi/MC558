@@ -5,12 +5,12 @@
 typedef struct aresta{
 	struct vertice* v1;
 	struct vertice* v2;
-	int peso;
+	long int peso;
 }aresta;
 
 typedef struct vertice{
 	struct vertice* predecessor;
-	int estimativa;
+	long int estimativa;
 }vertice;
 
 
@@ -18,23 +18,25 @@ void inicializa(vertice* sistemas, int n){
 	int i;
 	for (i = 0; i < n; i++){
 		sistemas[i].predecessor = NULL;
-		sistemas[i].estimativa = INT_MAX;
+		sistemas[i].estimativa = LONG_MAX;
 	}
 	sistemas[0].estimativa = 0;
 }
 
-int overflow(int a, int b){
-	if (a>0 && b>0 && (a+b<0))
-		return 1;
-	return 0;
+long int soma(long int a, long int b){
+	if (a == LONG_MAX || b == LONG_MAX)
+		return LONG_MAX;
+	else if (a == LONG_MIN  || b == LONG_MIN)
+		return LONG_MIN;
+	return a+b;
 }
 
 void relaxar(aresta* buraco){
 	int a, b;
 	a = buraco->v1->estimativa;
 	b = buraco->peso;
-	if ((buraco->v2->estimativa > a+b) && !overflow(a, b)){
-		buraco->v2->estimativa = buraco->v1->estimativa + buraco->peso;
+	if (buraco->v2->estimativa > soma(a, b)){
+		buraco->v2->estimativa = soma(a, b);
 		buraco->v2->predecessor = buraco->v1;
 	}
 }
@@ -75,7 +77,7 @@ int main (){
 	}
 	printf("\n");*/
 	for (j = 0; j < n_buracos; j++){
-		if (buracos[j].v2->estimativa > buracos[j].v1->estimativa + buracos[j].peso){
+		if (buracos[j].v2->estimativa > soma (buracos[j].v1->estimativa, buracos[j].peso)){
 			printf("Possivel\n");
 			free(sistemas);
 			free(buracos);
