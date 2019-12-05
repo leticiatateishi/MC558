@@ -18,7 +18,7 @@ void inicializa(vertice* sistemas, int n){
 	int i;
 	for (i = 0; i < n; i++){
 		sistemas[i].predecessor = NULL;
-		sistemas[i].estimativa = 9999999;
+		sistemas[i].estimativa = INT_MAX;
 	}
 	sistemas[0].estimativa = 0;
 }
@@ -30,11 +30,12 @@ int overflow(int a, int b){
 }
 
 void relaxar(aresta* buraco){
-	int a = buraco->v1->estimativa;
-	int b = buraco->v2->estimativa;
-	if ((a > b + buraco->peso) && !overflow(a, b)){
-		buraco->v1->estimativa = buraco->v2->estimativa + buraco->peso;
-		buraco->v1->predecessor = buraco->v2;
+	int a, b;
+	a = buraco->v1->estimativa;
+	b = buraco->peso;
+	if ((buraco->v2->estimativa > a+b) && !overflow(a, b)){
+		buraco->v2->estimativa = buraco->v1->estimativa + buraco->peso;
+		buraco->v2->predecessor = buraco->v1;
 	}
 }
 
@@ -60,17 +61,29 @@ int main (){
 		buracos[i].v2 = &(sistemas[n]);
 	}
 
-	for (i = 0; i < n_sistemas; i++){
+	for (i = 0; i < n_sistemas-1; i++){
 		for (j = 0; j < n_buracos; j++){
+			/*for (p = 0; p < n_sistemas; p++){
+				printf(" %d ", sistemas[p].estimativa);
+			}
+			printf("\n");*/
 			relaxar(&(buracos[j]));
 		}
 	}
+	/*for (p = 0; p < n_sistemas; p++){
+		printf(" %d ", sistemas[p].estimativa);
+	}
+	printf("\n");*/
 	for (j = 0; j < n_buracos; j++){
-		if (buracos[j].v1->estimativa > buracos[j].v2->estimativa + buracos[j].peso){
+		if (buracos[j].v2->estimativa > buracos[j].v1->estimativa + buracos[j].peso){
 			printf("Possivel\n");
+			free(sistemas);
+			free(buracos);
 			return 0;
 		}
 	}
+	free(sistemas);
+	free(buracos);
 	printf("Impossivel\n");
 
 	return 0;
