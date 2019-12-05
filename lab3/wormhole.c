@@ -1,3 +1,5 @@
+/*	Leticia Mayumi Araújo Tateishi*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -5,12 +7,12 @@
 typedef struct aresta{
 	struct vertice* v1;
 	struct vertice* v2;
-	long int peso;
+	int peso;
 }aresta;
 
 typedef struct vertice{
 	struct vertice* predecessor;
-	long int estimativa;
+	int estimativa;
 }vertice;
 
 
@@ -18,16 +20,16 @@ void inicializa(vertice* sistemas, int n){
 	int i;
 	for (i = 0; i < n; i++){
 		sistemas[i].predecessor = NULL;
-		sistemas[i].estimativa = LONG_MAX;
+		sistemas[i].estimativa = INT_MAX;
 	}
 	sistemas[0].estimativa = 0;
 }
 
-long int soma(long int a, long int b){
-	if (a == LONG_MAX || b == LONG_MAX)
-		return LONG_MAX;
-	else if (a == LONG_MIN  || b == LONG_MIN)
-		return LONG_MIN;
+int soma(int a, int b){
+	if (a == INT_MAX)
+		return INT_MAX;
+	else if (a == INT_MIN)
+		return INT_MIN;
 	return a+b;
 }
 
@@ -40,7 +42,6 @@ void relaxar(aresta* buraco){
 		buraco->v2->predecessor = buraco->v1;
 	}
 }
-
 
 
 int main (){
@@ -65,19 +66,12 @@ int main (){
 
 	for (i = 0; i < n_sistemas-1; i++){
 		for (j = 0; j < n_buracos; j++){
-			/*for (p = 0; p < n_sistemas; p++){
-				printf(" %d ", sistemas[p].estimativa);
-			}
-			printf("\n");*/
 			relaxar(&(buracos[j]));
 		}
 	}
-	/*for (p = 0; p < n_sistemas; p++){
-		printf(" %d ", sistemas[p].estimativa);
-	}
-	printf("\n");*/
+	
 	for (j = 0; j < n_buracos; j++){
-		if (buracos[j].v2->estimativa > soma (buracos[j].v1->estimativa, buracos[j].peso)){
+		if (buracos[j].v2->estimativa > soma(buracos[j].v1->estimativa, buracos[j].peso)){
 			printf("Possivel\n");
 			free(sistemas);
 			free(buracos);
